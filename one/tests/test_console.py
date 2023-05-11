@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""This Module is for testing the HBNBCommand Class"""
+"""Module for testing the HBNBCommand Class"""
 import unittest
 from console import HBNBCommand
 from unittest.mock import patch

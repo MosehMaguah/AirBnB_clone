@@ -4,7 +4,7 @@ from models.base_model import BaseModel
 
 
 class State(BaseModel):
-    '''This Class is for managing state objects'''
+    '''Class for managing state objects'''
     name = ""
 
     def __init__(self, *args, **kwargs):

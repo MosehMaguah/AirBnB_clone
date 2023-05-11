@@ -16,7 +16,7 @@ class FileStorage:
         return FileStorage.__objects
 
     def new(self, obj):
-        """sets __objects to the obj with key <obj class name>.id"""
+        """sets in __objects the obj with key <obj class name>.id"""
         key = "{}.{}".format(type(obj).__name__, obj.id)
         FileStorage.__objects[key] = obj
 
@@ -53,7 +53,7 @@ class FileStorage:
             obj_dict = json.load(f)
             obj_dict = {k: self.classes()[v["__class__"]](**v)
                         for k, v in obj_dict.items()}
-            # TODO: should this overwrite or insert?
+
             FileStorage.__objects = obj_dict
 
     def attributes(self):

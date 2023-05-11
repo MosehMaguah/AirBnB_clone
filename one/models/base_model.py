@@ -6,7 +6,7 @@ from models import storage
 
 
 class BaseModel():
-    ''''The Class from which all other classes will inherit'''
+    ''''Class from which all other classes will inherit'''
 
     def __init__(self, *args, **kwargs):
         '''Initializes instance attributes'''
@@ -32,7 +32,7 @@ class BaseModel():
                 # print(f"{key}: {kwargs[key]}")
 
     def __str__(self):
-        '''Returns an official string representation'''
+        '''Returns official string representation'''
         return (f"[{self.__class__.__name__}] ({self.id}) \
 {str(self.__dict__)}")
 
