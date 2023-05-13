@@ -7,5 +7,5 @@ from models.base_model import BaseModel
 class City(BaseModel):
     """This class is for managing city objects"""
 
-    state_id = ""
-    name = ""
+    state_id = ''
+    name = ''

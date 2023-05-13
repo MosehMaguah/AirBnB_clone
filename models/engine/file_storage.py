@@ -17,14 +17,17 @@ class FileStorage:
 
     def new(self, obj):
         """sets in __objects the obj with key <obj class name>.id"""
-        key = "{}.{}".format(type(obj).__name__, obj.id)
+        key = f"{obj.__class__.__name__}.{obj.id}"
         FileStorage.__objects[key] = obj
 
     def save(self):
         """ serializes __objects to the JSON file (path: __file_path)"""
-        with open(FileStorage.__file_path, "w", encoding="utf-8") as f:
-            d = {k: v.to_dict() for k, v in FileStorage.__objects.items()}
-            json.dump(d, f)
+        objects_dict = {
+            key: value.to_dict()
+            for key, value in FileStorage.__objects.items()
+            }
+        with open(FileStorage.__file_path, "w") as f:
+            json.dump(objects_dict, f, indent=4)
 
     def classes(self):
         """Returns a dictionary of valid classes and their references"""
@@ -47,14 +50,20 @@ class FileStorage:
 
     def reload(self):
         """Reloads the stored objects"""
-        if not os.path.isfile(FileStorage.__file_path):
-            return
-        with open(FileStorage.__file_path, "r", encoding="utf-8") as f:
-            obj_dict = json.load(f)
-            obj_dict = {k: self.classes()[v["__class__"]](**v)
-                        for k, v in obj_dict.items()}
+        from . import import_all_classes
+        classes = import_all_classes()
 
-            FileStorage.__objects = obj_dict
+        try:
+            with open(FileStorage.__file_path, "r") as f:
+                loaded_dict = json.load(f)
+            FileStorage.__objects = {
+                key: eval(value['__class__'], classes)(**value)
+                for key, value in loaded_dict.items()
+                }
+        except FileNotFoundError:
+            pass
+        except json.decoder.JSONDecodeError:
+            pass
 
     def attributes(self):
         """Returns the valid attributes and their types for classname"""
